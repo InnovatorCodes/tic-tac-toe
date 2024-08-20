@@ -16,12 +16,31 @@ h1{
     display: grid;
     width: 80vmin;
     height: 80vmin;
-    grid-template-columns: repeat(3,1fr);
-    grid-template-rows: repeat(3,1fr);
+    grid-template-columns: repeat(3,33.33%);
+    grid-template-rows: repeat(3,33.33%);
     border: 2px solid black;
     border-radius: 15px;
+    justify-content: center;
+    align-content: center;
 }
 
 .square{
-    border: 1px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square:nth-child(3n){
+    border-right: none;
+}
+
+.square:nth-child(n+7){
+    border-bottom: none;
+}
+
+img{
+    width: 85%;
+    border: none;
 }
