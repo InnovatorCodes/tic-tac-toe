@@ -68,7 +68,6 @@ const game=(function() {
         let diagsum=0;
         for(let i=0;i<3;i++) diagsum+=gameboard[i][i];
         if(diagsum==3*player){
-            console.log('hi');
             for(let j=0;j<3;j++) grid.querySelectorAll('.square')[j*3+j].classList.add('winsq');
             return true;
         }
@@ -132,7 +131,7 @@ let gameover=false;
 grid.addEventListener('click',(event)=>{
     let target=event.target;
     if(target instanceof HTMLImageElement) target=target.parentNode;
-    if(!target.classList.contains('filled') && !gameover){
+    if(!target.classList.contains('filled') && !gameover &&target.classList.contains('square')){
         target.classList.add('filled');
         let player=game.getCurrentPlayer();
         const image=document.createElement('img');
@@ -142,7 +141,9 @@ grid.addEventListener('click',(event)=>{
         let row=parseInt(target.dataset.index);
         let col=row%3;
         row=Math.floor(row/3);
+        //console.log(row,col);
         gameover=game.playRound(row,col);
+        //game.displayBoard();
         player=(game.getCurrentPlayer()==1)?'X':'O';
         if(!gameover)result.textContent=`Player ${player}'s Turn`;
     }
