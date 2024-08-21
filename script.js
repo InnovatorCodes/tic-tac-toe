@@ -12,7 +12,7 @@ const game=(function() {
             gameboard[row][column]=currentPlayer;
             if(checkWin(currentPlayer)){
                 let winner= (currentPlayer==1)?'X':'O';
-                document.querySelector('.result').textContent=`Game Over! ${winner} Wins`;
+                document.querySelector('.result').textContent=`Player ${winner} Wins`;
                 return true;
             } 
             else if(checkGameOver()){
@@ -48,7 +48,10 @@ const game=(function() {
     const checkWin=(player)=>{
         for(let i=0;i<3;i++){
             let rowsum=gameboard[i].reduce((acc,current)=>acc+current,0);
-            if(rowsum==3*player) return true;
+            if(rowsum==3*player){
+                for(let j=0;j<3;j++) grid.querySelectorAll('.square')[i*3+j].classList.add('winsq');
+                return true;
+            } 
         }
 
         for(let i=0;i<3;i++){
@@ -56,16 +59,26 @@ const game=(function() {
             for(let j=0;j<3;j++){
                 colsum+=gameboard[j][i];
             }
-            if(colsum==3*player) return true;
+            if(colsum==3*player){
+                for(let j=0;j<3;j++) grid.querySelectorAll('.square')[j*3+i].classList.add('winsq');
+                return true;
+            } 
         }
 
         let diagsum=0;
         for(let i=0;i<3;i++) diagsum+=gameboard[i][i];
-        if(diagsum==3*player) return true;
+        if(diagsum==3*player){
+            console.log('hi');
+            for(let j=0;j<3;j++) grid.querySelectorAll('.square')[j*3+j].classList.add('winsq');
+            return true;
+        }
 
         diagsum=0;
         for(let i=0;i<3;i++) diagsum+=gameboard[i][2-i];
-        if(diagsum==3*player) return true;
+        if(diagsum==3*player){
+            for(let j=0;j<3;j++) grid.querySelectorAll('.square')[j*3+(2-j)].classList.add('winsq');
+            return true;
+        }
         return false;
     };
 
@@ -104,16 +117,19 @@ const game=(function() {
 
 const startbtn=document.querySelector('button');
 const grid=document.querySelector('.grid');
+const result=document.querySelector('.result');
+const restartbtn=document.querySelector('.restart');
 startbtn.addEventListener('click',()=>{
     startbtn.classList.add('displayoff');
     grid.classList.remove('displayoff');
+    result.classList.remove('displayoff');
     document.querySelector('.main').style.padding='10px';
     for(let i=0;i<9;i++){
         const div=document.createElement('div');
         div.classList.add('square');
         div.dataset.index=`${i}`;
         grid.append(div);
-
+        restartbtn.classList.remove('displayoff');
     }
 })
 
@@ -134,4 +150,16 @@ grid.addEventListener('click',(event)=>{
         gameover=game.playRound(row,col);
     }
     
+})
+
+restartbtn.addEventListener('click',()=>{
+    grid.querySelectorAll('.square').forEach((square)=>{
+        if(square.hasChildNodes()) square.removeChild(square.firstChild);
+        square.classList.remove('winsq');
+        square.classList.remove('filled');
+        game.resetBoard();
+        currentPlayer=1;
+        gameover=false;
+        result.textContent='';
+    })
 })
