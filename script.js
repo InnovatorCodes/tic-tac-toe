@@ -12,13 +12,11 @@ const game=(function() {
             gameboard[row][column]=currentPlayer;
             if(checkWin(currentPlayer)){
                 let winner= (currentPlayer==1)?'X':'O';
-                displayBoard();
-                console.log(`Game Over! ${winner} Wins`);
+                document.querySelector('.result').textContent=`Game Over! ${winner} Wins`;
                 return true;
             } 
             else if(checkGameOver()){
-                displayBoard();
-                console.log(`Game Over! It's a Draw`);
+                document.querySelector('.result').textContent=`Game Over! It's a Draw`;
                 return true;
             }
             changePlayer();
@@ -90,18 +88,50 @@ const game=(function() {
     };
 
     const getCurrentPlayer=()=>{
-        if(currentPlayer==1) return 'X';
-        else return 'O';
+        return currentPlayer;
     };
 
     return {playRound, displayBoard, getCurrentPlayer, checkGameOver, resetBoard};
 
 })();
 
-let gameover=false;
 /*while(!gameover){
     game.displayBoard();
     let input=prompt(`${game.getCurrentPlayer()}'s turn\nEnter Row and Column seperated by space (1-indexed)`).split(' ');
     gameover=game.playRound(parseInt(input[0])-1,parseInt(input[1])-1);
 
 }*/
+
+const startbtn=document.querySelector('button');
+const grid=document.querySelector('.grid');
+startbtn.addEventListener('click',()=>{
+    startbtn.classList.add('displayoff');
+    grid.classList.remove('displayoff');
+    document.querySelector('.main').style.padding='10px';
+    for(let i=0;i<9;i++){
+        const div=document.createElement('div');
+        div.classList.add('square');
+        div.dataset.index=`${i}`;
+        grid.append(div);
+
+    }
+})
+
+let gameover=false;
+grid.addEventListener('click',(event)=>{
+    let target=event.target;
+    if(target instanceof HTMLImageElement) target=target.parentNode;
+    if(!target.classList.contains('filled') && !gameover){
+        target.classList.add('filled');
+        let player=game.getCurrentPlayer();
+        const image=document.createElement('img');
+        if(player==1) image.src='./images/x.png';
+        else image.src='./images/o.png';
+        target.appendChild(image);
+        let row=parseInt(target.dataset.index);
+        let col=row%3;
+        row=Math.floor(row/3);
+        gameover=game.playRound(row,col);
+    }
+    
+})
