@@ -45,6 +45,19 @@ h1{
 img{
     width: 85%;
     border: none;
+    animation: zoomIn 0.4s ease-in-out;
+    transform-origin: center;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .main{
