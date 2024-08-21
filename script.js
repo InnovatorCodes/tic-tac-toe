@@ -98,6 +98,7 @@ const game=(function() {
                 gameboard[i][j]=0;
             }
         }
+        currentPlayer=1;
     };
 
     const getCurrentPlayer=()=>{
@@ -107,13 +108,6 @@ const game=(function() {
     return {playRound, displayBoard, getCurrentPlayer, checkGameOver, resetBoard};
 
 })();
-
-/*while(!gameover){
-    game.displayBoard();
-    let input=prompt(`${game.getCurrentPlayer()}'s turn\nEnter Row and Column seperated by space (1-indexed)`).split(' ');
-    gameover=game.playRound(parseInt(input[0])-1,parseInt(input[1])-1);
-
-}*/
 
 const startbtn=document.querySelector('button');
 const grid=document.querySelector('.grid');
@@ -130,6 +124,7 @@ startbtn.addEventListener('click',()=>{
         div.dataset.index=`${i}`;
         grid.append(div);
         restartbtn.classList.remove('displayoff');
+        result.textContent=`Player X's Turn`;
     }
 })
 
@@ -148,6 +143,8 @@ grid.addEventListener('click',(event)=>{
         let col=row%3;
         row=Math.floor(row/3);
         gameover=game.playRound(row,col);
+        player=(game.getCurrentPlayer()==1)?'X':'O';
+        if(!gameover)result.textContent=`Player ${player}'s Turn`;
     }
     
 })
@@ -158,8 +155,7 @@ restartbtn.addEventListener('click',()=>{
         square.classList.remove('winsq');
         square.classList.remove('filled');
         game.resetBoard();
-        currentPlayer=1;
         gameover=false;
-        result.textContent='';
+        result.textContent="Player X's Turn";
     })
 })

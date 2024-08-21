@@ -1,6 +1,12 @@
+@font-face {
+    font-family: 'rustico';
+    src: url(./fonts/Rustico-Regular.otf);
+}
+
 *{
     box-sizing: border-box;
 }
+
 body{
     display: flex;
     flex-direction: column;
@@ -13,6 +19,10 @@ body{
 h1{
     font-size: 50px;
     margin: 0;
+}
+
+h1,.result{
+    font-family: 'rustico';
 }
 
 .grid{
@@ -84,11 +94,11 @@ button{
 }
 
 .result{
-    height: 30px;
+    height: min-content;
     width: 100%;
     text-align: center;
     font-size: 30px;
-    font-weight: 700;
+    word-spacing: 10px;
 }
 
 .square:nth-child(1){
