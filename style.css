@@ -129,3 +129,8 @@ button{
 .displayoff{
     display: none;
 }
+footer{
+    font-family: 'arial';
+    font-size: 20px;
+    font-weight: 700;
+}
